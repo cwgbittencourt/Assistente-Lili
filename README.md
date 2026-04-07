@@ -3,34 +3,32 @@
 Assistente local com ativacao por texto, comando de voz e resposta falada.
 
 ## Requisitos
-1. Windows 10/11.
-2. Python 3.11.
-3. Microfone configurado no sistema.
+
+1. Windows 10 ou Windows 11
+2. Python 3.11
+3. Microfone configurado no sistema
+4. GPU NVIDIA compatível com CUDA 12.4 (**recomendada para uma boa experiência**)
+
+> Observação:
+> O projeto está configurado atualmente com `torch==2.4.1+cu124`.
+> Se você não tiver GPU NVIDIA compatível com CUDA 12.4, será necessário ajustar a dependência do PyTorch para uma variante compatível com CPU ou com o seu ambiente.
 
 ## Instalacao
-1. Crie e ative um ambiente virtual.
+> **Atenção:** abra o terminal na pasta raiz do projeto, isto é, a pasta **`Lili`**, onde está o arquivo `requirements.txt`. Se você executar os comandos em outra pasta, a instalação poderá falhar.
+
+Na **pasta raiz do repositório**, execute:
+
 ```powershell
-py -3.11 -m venv Lili\.venv
-.\Lili\.venv\Scripts\Activate.ps1
-```
-2. Instale as dependencias.
-```powershell
-pip install -r requirements.txt
-```
-3. Se voce alterar dependencias, gere novamente o arquivo:
-```powershell
-.\Lili\.venv\Scripts\Activate.ps1
-pip freeze > requirements.txt
-```
-3. Copie o arquivo de configuracao.
-```powershell
-Copy-Item Lili\.env.example Lili\.env
+py -3.11 -m venv .\Lili\.venv
+.\Lili\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\Lili\.venv\Scripts\python.exe -m pip install torch==2.4.1+cu124 --index-url https://download.pytorch.org/whl/cu124
+.\Lili\.venv\Scripts\python.exe -m pip install -r .\Lili\requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
+Copy-Item .\Lili\.env.example .\Lili\.env -Force
 ```
 
 ## Execucao
 ```powershell
-.\Lili\.venv\Scripts\Activate.ps1
-python Lili\run.py
+.\Lili\.venv\Scripts\python.exe .\Lili\run.py
 ```
 
 ## Configuracao
