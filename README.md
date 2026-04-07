@@ -8,6 +8,7 @@ Assistente local com ativacao por texto, comando de voz e resposta falada.
 2. Python 3.11
 3. Microfone configurado no sistema
 4. GPU NVIDIA compatível com CUDA 12.4 (**recomendada para uma boa experiência**)
+5. Ollama instalado localmente ou acesso a um provedor de IA (Open Ai, Gemini, Ollama Cloud ou Groq)
 
 > Observação:
 > O projeto está configurado atualmente com `torch==2.4.1+cu124`.
