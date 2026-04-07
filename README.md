@@ -13,7 +13,7 @@ Assistente local com ativacao por texto, comando de voz e resposta falada.
 > O projeto está configurado atualmente com `torch==2.4.1+cu124`.
 > Se você não tiver GPU NVIDIA compatível com CUDA 12.4, será necessário ajustar a dependência do PyTorch para uma variante compatível com CPU ou com o seu ambiente.
 
-## Instalacao
+## Instalação
 > **Atenção:** abra o terminal na pasta raiz do projeto, isto é, a pasta **`Lili`**, onde está o arquivo `requirements.txt`. Se você executar os comandos em outra pasta, a instalação poderá falhar.
 
 Na **pasta raiz do repositório**, execute:
