@@ -22,7 +22,6 @@ PROVIDERS: dict[str, ProviderSpec] = {
     "mock": ProviderSpec("mock", "Mock", False, None, False),
     "openai": ProviderSpec("openai", "OpenAI", True, "https://api.openai.com"),
     "gemini": ProviderSpec("gemini", "Gemini", True, "https://generativelanguage.googleapis.com"),
-    "grok": ProviderSpec("grok", "Grok", True, "https://api.x.ai"),
     "ollama_local": ProviderSpec("ollama_local", "Ollama Local", False, "http://localhost:11434"),
     "ollama_cloud": ProviderSpec("ollama_cloud", "Ollama Cloud", True, "https://ollama.com"),
 }
@@ -32,7 +31,6 @@ PROVIDER_ORDER = [
     "ollama_cloud",
     "openai",
     "gemini",
-    "grok",
     "mock",
 ]
 
@@ -70,32 +68,6 @@ class OpenAIChatBackend(ChatBackend):
         data = _parse_json(response, "OpenAI")
         text = _extract_openai_style_content(data)
         return ChatResponse(text=text, provider_name=f"openai:{self._model}")
-
-
-class GrokChatBackend(ChatBackend):
-    def __init__(self, api_key: str, base_url: str, model: str, timeout_seconds: float) -> None:
-        self._api_key = api_key
-        self._base_url = base_url.rstrip("/")
-        self._model = model
-        self._timeout_seconds = timeout_seconds
-
-    def ask(self, prompt: str) -> ChatResponse:
-        endpoint = f"{self._base_url}/v1/chat/completions"
-        payload = {
-            "model": self._model,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.2,
-        }
-        response = requests.post(
-            endpoint,
-            json=payload,
-            headers={"Authorization": f"Bearer {self._api_key}"},
-            timeout=self._timeout_seconds,
-        )
-        _raise_for_status(response)
-        data = _parse_json(response, "Grok")
-        text = _extract_openai_style_content(data)
-        return ChatResponse(text=text, provider_name=f"grok:{self._model}")
 
 
 class GeminiChatBackend(ChatBackend):
@@ -140,15 +112,13 @@ def create_backend(config: ChatProviderConfig) -> ChatBackend:
     if not model:
         raise ValueError(f"Selecione um modelo valido para {spec.label}.")
 
-    if config.provider in {"openai", "gemini", "grok", "ollama_cloud"}:
+    if config.provider in {"openai", "gemini", "ollama_cloud"}:
         _require_token(config, spec)
 
     if config.provider == "openai":
         return OpenAIChatBackend(config.api_key or "", base_url, model, config.timeout_seconds)
     if config.provider == "gemini":
         return GeminiChatBackend(config.api_key or "", base_url, model, config.timeout_seconds)
-    if config.provider == "grok":
-        return GrokChatBackend(config.api_key or "", base_url, model, config.timeout_seconds)
     if config.provider in {"ollama_local", "ollama_cloud"}:
         return OllamaChatBackend(
             OllamaClientConfig(
@@ -172,10 +142,10 @@ def list_models(config: ChatProviderConfig) -> list[str]:
     if not base_url:
         raise ValueError(f"Base URL nao configurada para {spec.label}.")
 
-    if config.provider in {"openai", "gemini", "grok", "ollama_cloud"}:
+    if config.provider in {"openai", "gemini", "ollama_cloud"}:
         _require_token(config, spec)
 
-    if config.provider in {"openai", "grok"}:
+    if config.provider == "openai":
         endpoint = f"{base_url.rstrip('/')}/v1/models"
         response = requests.get(
             endpoint,
