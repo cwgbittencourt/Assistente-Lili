@@ -1,7 +1,7 @@
 # Lili
 
 Assistente local com ativacao por texto, comando de voz e resposta falada.
-[![Assista ao vídeo](https://raw.githubusercontent.com/cwgbittencourt/Assistente-Lili/main/Lili/doc/thumb.png)]
+![Assista ao vídeo](https://raw.githubusercontent.com/cwgbittencourt/Assistente-Lili/main/Lili/doc/thumb.png)
 ## Requisitos
 
 1. Windows 10 ou Windows 11
